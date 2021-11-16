@@ -6,7 +6,7 @@ NumSeqMap.__index = NumSeqMap
 -- specifying mapSize is optional and represents the number of equally-spaced samples taken to accurately represent the number sequence in map format
 function NumSeqMap.new(numSeq, mapSize) --TODO: Change to maxMapSize where mapSize adapts to number of keypoints? Special case when #keypoints = 2
 	local self = setmetatable({}, NumSeqMap)
-	self._mapSize = mapSize or 60 -- must be an integer
+	self._mapSize = mapSize or 20 -- must be an integer
 	self._map = {}
 	
 	local SAMPLING_INTERVAL = 1 / self._mapSize
