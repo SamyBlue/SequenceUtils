@@ -28,6 +28,9 @@ function NumSeqMap.new(numSeq, mapSize) --TODO: Change to maxMapSize where mapSi
 	return self
 end
 
-
+-- Returns a linearly-approximated value on the NumberSequence near the point alpha
+function NumSeqMap:GetValue(alpha) -- alpha clamped between 0 and 1
+	-- return self._map[math.floor(math.clamp(alpha, 0, 1) * self._mapSize)]
+end
 
 return NumSeqMap
