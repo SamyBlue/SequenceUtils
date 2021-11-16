@@ -8,7 +8,7 @@ function NumSeqMap.new(numSeq, mapSize)
 	local self = setmetatable({}, NumSeqMap)
 	self._mapSize = mapSize or 20 -- must be an integer
 	self._map = {}
-	
+
 	local keypoints = numSeq.Keypoints
 
 	if #keypoints == 2 then -- Special case where can construct map with 100% accuracy
@@ -20,13 +20,26 @@ function NumSeqMap.new(numSeq, mapSize)
 
 	self._samplingInterval = 1 / self._mapSize
 	local kpointIndex = 2
-	
+
 	for i = 1, self._mapSize - 1 do
-		
-		-- local kpointTime = keypoints[kpointIndex].Time
-		
-		-- local alpha = i * SAMPLING_INTERVAL
-		
+		local alphaTime = i * self._samplingInterval
+
+		--Get smallest keypoint.Time greater than alphaTime
+		if alphaTime > keypoints[kpointIndex].Time then
+			for j = kpointIndex + 1, #keypoints do
+				if alphaTime < keypoints[j].Time then
+					kpointIndex = j
+					break
+				end
+			end
+		end
+
+		local kpointTime = keypoints[kpointIndex].Time
+		local prevKpointTime = keypoints[kpointIndex - 1].Time
+		local kpointValue = keypoints[kpointIndex].Value
+		local prevKpointValue = keypoints[kpointIndex - 1].Value
+
+		self._map[i] = prevKpointValue + (kpointValue - prevKpointValue) * (alphaTime - prevKpointTime) / (kpointTime - prevKpointTime)
 	end
 
 	return self
