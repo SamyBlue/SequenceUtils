@@ -34,12 +34,13 @@ function NumSeqMap.new(numSeq, mapSize)
 			end
 		end
 
-		local kpointTime = keypoints[kpointIndex].Time
-		local prevKpointTime = keypoints[kpointIndex - 1].Time
-		local kpointValue = keypoints[kpointIndex].Value
-		local prevKpointValue = keypoints[kpointIndex - 1].Value
+		local nextKpoint = keypoints[kpointIndex]
+		local prevKpoint = keypoints[kpointIndex - 1]
 
-		self._map[i] = prevKpointValue + (kpointValue - prevKpointValue) * (alphaTime - prevKpointTime) / (kpointTime - prevKpointTime)
+		self._map[i] = prevKpoint.Value
+			+ (nextKpoint.Value - prevKpoint.Value)
+				* (alphaTime - prevKpoint.Time)
+				/ (nextKpoint.Time - prevKpoint.Time)
 	end
 
 	return self
@@ -47,7 +48,11 @@ end
 
 -- Returns a linearly-approximated value on the NumberSequence near the point alpha
 function NumSeqMap:GetValue(alpha) -- alpha clamped between 0 and 1
-	-- return self._map[math.floor(math.clamp(alpha, 0, 1) * self._mapSize)]
+	local prevMapIndex = math.floor(alpha / self._samplingInterval)
+	local nextMapIndex = math.min(self._mapSize, prevMapPoint + 1)
+
+	return self._map[prevMapIndex]
+		+ (self._map[nextMapIndex] + self._map[prevMapIndex]) * (alpha - prevMapIndex * self._samplingInterval)
 end
 
 return NumSeqMap
