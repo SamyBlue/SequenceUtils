@@ -45,7 +45,7 @@ function NumSeqMap.new(numSeq, mapSize)
 end
 
 -- Returns a linearly-approximated value on the NumberSequence near the point alpha
-function NumSeqMap:GetValue(alpha) -- alpha clamped between 0 and 1
+function NumSeqMap:GetValue(alpha) -- Ensure alpha clamped between 0 and 1
 	local prevMapIndex = math.floor(alpha * self._mapSize)
 	local nextMapIndex = math.min(self._mapSize, prevMapIndex + 1)
 
