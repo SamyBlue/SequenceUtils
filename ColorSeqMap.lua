@@ -2,9 +2,12 @@ local ColorSeqMap = {} -- Define new class
 ColorSeqMap.__type = "ColorSeqMap"
 ColorSeqMap.__index = ColorSeqMap
 
-function ColorSeqMap.new(colorSeq, mapSize)
+-- Gamma is used to change the color space used for interpolation where higher gamma better preserves perceived brightness. See: https://www.youtube.com/watch?v=LKnqECcg6Gw
+function ColorSeqMap.new(colorSeq, gamma, mapSize)
 	local self = setmetatable({}, ColorSeqMap)
 	self._mapSize = mapSize or 20 -- must be an integer
+    self._gamma = gamma or 2
+    self._gammaDiv = 1 / self._gamma
 	self._map = {}
 
 	local keypoints = colorSeq.Keypoints
@@ -40,6 +43,14 @@ function ColorSeqMap.new(colorSeq, mapSize)
 	end
 
 	return self
+end
+
+function ColorSeqMap:_interpColor(startColor, endColor, fraction) -- Interpolate with gamma correction
+    local gamma, gammaDiv = self._gamma, self._gammaDiv
+    local sColor = Color3.new(startColor.R ^ gamma, startColor.G ^ gamma, startColor.B ^ gamma)
+    local eColor = Color3.new(endColor.R ^ gamma, endColor.G ^ gamma, endColor.B ^ gamma)
+    local interpolated = sColor:Lerp(eColor, fraction)
+    return Color3.new(interpolated.R ^ gammaDiv, interpolated.G ^ gammaDiv, interpolated.B ^ gammaDiv)
 end
 
 -- Returns a linearly-approximated value on the ColorSequence near the point alpha
