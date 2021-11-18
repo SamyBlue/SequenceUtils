@@ -39,7 +39,7 @@ function ColorSeqMap.new(colorSeq, gamma, mapSize)
 		local nextKpoint = keypoints[kpointIndex]
 		local prevKpoint = keypoints[kpointIndex - 1] -- lowerbound for interpolation
 
-		self._map[i] = prevKpoint.Value + (nextKpoint.Value - prevKpoint.Value) * (alphaTime - prevKpoint.Time) / (nextKpoint.Time - prevKpoint.Time)
+		self._map[i] = self:_interpColor(prevKpoint.Value, nextKpoint.Value, (alphaTime - prevKpoint.Time) / (nextKpoint.Time - prevKpoint.Time))
 	end
 
 	return self
@@ -58,7 +58,7 @@ function ColorSeqMap:GetValue(alpha) -- Ensure alpha clamped between 0 and 1
 	local prevMapIndex = math.floor(alpha * self._mapSize)
 	local nextMapIndex = math.min(self._mapSize, prevMapIndex + 1)
 
-	return self._map[prevMapIndex]:lerp(self._map[nextMapIndex], (alpha - prevMapIndex * self._samplingInterval) * self._mapSize)
+	return self:_interpColor(self._map[prevMapIndex], self._map[nextMapIndex], (alpha - prevMapIndex * self._samplingInterval) * self._mapSize)
 end
 
 return ColorSeqMap
