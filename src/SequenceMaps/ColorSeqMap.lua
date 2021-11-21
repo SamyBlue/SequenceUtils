@@ -39,17 +39,23 @@ function ColorSeqMap.new(colorSeq, gamma, mapSize)
 		local nextKpoint = keypoints[kpointIndex]
 		local prevKpoint = keypoints[kpointIndex - 1] -- lowerbound for interpolation
 
-		self._map[i] = self:_interpColor(prevKpoint.Value, nextKpoint.Value, (alphaTime - prevKpoint.Time) / (nextKpoint.Time - prevKpoint.Time))
+		self._map[i] = self:_interpColorExponent(prevKpoint.Value, nextKpoint.Value, (alphaTime - prevKpoint.Time) / (nextKpoint.Time - prevKpoint.Time))
 	end
 
 	return self
 end
 
-function ColorSeqMap:_interpColor(startColor, endColor, fraction) -- Interpolate with gamma correction
-    local gamma, gammaDiv = self._gamma, self._gammaDiv
+function ColorSeqMap:_interpColorExponent(startColor, endColor, fraction) -- Interpolate with gamma correction in exponentiated space
+    local gamma = self._gamma
     local sColor = Color3.new(startColor.R ^ gamma, startColor.G ^ gamma, startColor.B ^ gamma)
     local eColor = Color3.new(endColor.R ^ gamma, endColor.G ^ gamma, endColor.B ^ gamma)
     local interpolated = sColor:Lerp(eColor, fraction)
+    return interpolated
+end
+
+function ColorSeqMap:_interpColor(startColor, endColor, fraction) -- Interpolate and bring out of exponentiated space
+    local gammaDiv = self._gammaDiv
+    local interpolated = startColor:Lerp(endColor, fraction)
     return Color3.new(interpolated.R ^ gammaDiv, interpolated.G ^ gammaDiv, interpolated.B ^ gammaDiv)
 end
 
