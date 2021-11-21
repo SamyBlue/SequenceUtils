@@ -24,8 +24,7 @@ SizeScheme.Constructor = function (instance, timeLength)
     
     local Min, Max = instance:GetAttribute("SizeMin"), instance:GetAttribute("SizeMax")
     local Diff = Max - Min
-    local Sequence = instance:GetAttribute("SizeSequence")
-    local SeqMap = NumSeqMap.new(Sequence)
+    local SeqMap = NumSeqMap.new(instance:GetAttribute("SizeSequence"))
 
     HeartbeatLoopFor(timeLength, function (_, _, interp)
         instance.Size = Min + Diff * SeqMap:GetValue(interp)
