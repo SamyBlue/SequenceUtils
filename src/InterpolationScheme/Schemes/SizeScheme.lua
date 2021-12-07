@@ -1,16 +1,17 @@
 local HeartbeatLoopFor = require(script.Parent.Parent.Parent.Loops.HeartbeatLoopFor)
+local IsSequenceNotConstant = require(script.Parent.Parent.IsSequenceNotConstant)
 local NumSeqMap = require(script.Parent.Parent.Parent.SequenceMaps.NumSeqMap)
 local SizeScheme = {}
 
 SizeScheme.Attributes = {
     ["SizeFrom"] = Vector3.new(0, 0, 0),
-    ["SizeMin"] = Vector3.new(10, 10, 10),
-    ["SizeMax"] = Vector3.new(10, 10, 10),
+    ["SizeMin"] = Vector3.new(1, 1, 1),
+    ["SizeMax"] = Vector3.new(1, 1, 1),
     ["SizeSequence"] = NumberSequence.new(1)
 }
 
 SizeScheme.LoopCondition = function (instance)
-    return #instance:GetAttribute("SizeSequence").Keypoints > 1
+    return IsSequenceNotConstant(#instance:GetAttribute("SizeSequence"))
 end
 
 
@@ -20,7 +21,9 @@ SizeScheme.Constructor = function (instance, timeLength)
         return
     end
 
-    local SizeFrom = instance:GetAttribute("SizeFrom") --TODO: Add SizeFrom Positioning Logic
+    local SizeFrom = instance:GetAttribute("SizeFrom")
+    local SizeFromWorldPos = instance.CFrame:PointToWorldSpace(SizeFrom)
+    local OffsetVector = instance.Position - SizeFromWorldPos
     
     local Min, Max = instance:GetAttribute("SizeMin"), instance:GetAttribute("SizeMax")
     local Diff = Max - Min
