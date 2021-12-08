@@ -34,13 +34,16 @@ SizeScheme.Constructor = function (instance, timeLength, applyTo)
         end, function ()
             applyTo.Size = Max
         end)
-    else
-        local SizeFromWorldPos = instance.CFrame:PointToWorldSpace(SizeFrom)
-        local OffsetVector = instance.Position - SizeFromWorldPos
+    else        
+        HeartbeatLoopFor(timeLength, function (_, _, interp)
+            local scale = Min + Diff * SeqMap:GetValue(interp)
+            applyTo.Position = applyTo.CFrame:PointToWorldSpace(SizeFrom - SizeFrom * scale)
+            applyTo.Size = scale
+        end, function ()
+            applyTo.Size = Max
+        end)
     end
 
-    --TODO: Handle cases where applyTo.CFrame is changed by external sources
 end
-
 
 return SizeScheme
