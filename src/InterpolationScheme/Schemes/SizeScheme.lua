@@ -10,31 +10,36 @@ SizeScheme.Attributes = {
     ["SizeSequence"] = NumberSequence.new(1)
 }
 
-SizeScheme.LoopCondition = function (instance)
+SizeScheme._LoopCondition = function (instance)
     return IsSequenceNotConstant(instance:GetAttribute("SizeSequence"))
 end
 
-
-SizeScheme.Constructor = function (instance, timeLength)
+SizeScheme.Constructor = function (instance, timeLength, applyTo)
     
-    if not SizeScheme.LoopCondition(instance) then
+    if not SizeScheme._LoopCondition(instance) then
         return
     end
 
+    applyTo = applyTo or instance -- (Optional) Specify an alternative instance to apply scheme to
+
     local SizeFrom = instance:GetAttribute("SizeFrom")
-    local SizeFromWorldPos = instance.CFrame:PointToWorldSpace(SizeFrom)
-    local OffsetVector = instance.Position - SizeFromWorldPos
     
     local Min, Max = instance:GetAttribute("SizeMin"), instance:GetAttribute("SizeMax")
     local Diff = Max - Min
     local SeqMap = NumSeqMap.new(instance:GetAttribute("SizeSequence"))
 
-    HeartbeatLoopFor(timeLength, function (_, _, interp)
-        instance.Size = Min + Diff * SeqMap:GetValue(interp)
-    end, function ()
-        instance.Size = Max
-    end)
+    if SizeFrom == Vector3.new(0, 0, 0) then
+        HeartbeatLoopFor(timeLength, function (_, _, interp)
+            applyTo.Size = Min + Diff * SeqMap:GetValue(interp)
+        end, function ()
+            applyTo.Size = Max
+        end)
+    else
+        local SizeFromWorldPos = instance.CFrame:PointToWorldSpace(SizeFrom)
+        local OffsetVector = instance.Position - SizeFromWorldPos
+    end
 
+    --TODO: Handle cases where applyTo.CFrame is changed by external sources
 end
 
 
