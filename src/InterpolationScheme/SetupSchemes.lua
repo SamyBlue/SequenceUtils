@@ -14,6 +14,10 @@ for _, ClassFolder in ipairs(SchemesFolder:GetChildren()) do
 end
 
 local function SetupSchemesOnInstance(instance)
+    if instance:GetAttribute("TimeLength") then
+        warn("Resetting InterpolationScheme attributes for " .. instance:GetFullName())
+    end
+
     instance:SetAttribute("TimeLength", DEFAULT_TIME_LENGTH)
 
     if instance:IsA('BasePart') then
