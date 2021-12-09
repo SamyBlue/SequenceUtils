@@ -5,9 +5,8 @@ local SizeScheme = {}
 
 SizeScheme.Attributes = {
     ["SizeFrom"] = Vector3.new(0, 0, 0), --* Coordinates must be specified in initial object space of relevant instance
-    ["SizeStart"] = Vector3.new(1, 1, 1), --! All x, y, z Vector3 components assumed non-zero
     ["SizeGoal"] = Vector3.new(1, 1, 1), --! All x, y, z Vector3 components assumed non-zero
-    ["SizeSequence"] = NumberSequence.new(1)
+    ["SizeSequence"] = NumberSequence.new(0)
 }
 
 SizeScheme._LoopCondition = function (instance)
@@ -31,17 +30,22 @@ SizeScheme.Play = function (instance, timeLength, applyTo)
 
     local SizeFrom = instance:GetAttribute("SizeFrom")
     
-    local Start, Goal = instance:GetAttribute("SizeStart"), instance:GetAttribute("SizeGoal")
+    local Start, Goal = applyTo.Size, instance:GetAttribute("SizeGoal")
     local Diff = Goal - Start
     local SeqMap = NumSeqMap.new(instance:GetAttribute("SizeSequence"))
 
     if SizeFrom == Vector3.new(0, 0, 0) then
+
         HeartbeatLoopFor(timeLength, function (_, _, interp)
             applyTo.Size = Start + Diff * SeqMap:GetValue(interp)
         end, function ()
             applyTo.Size = Goal
         end)
+
     else        
+
+        
+
         HeartbeatLoopFor(timeLength, function (_, _, interp)
             local scale = Start + Diff * SeqMap:GetValue(interp)
             applyTo.Position = applyTo.CFrame:PointToWorldSpace(SizeFrom - SizeFrom * scale)
@@ -49,6 +53,7 @@ SizeScheme.Play = function (instance, timeLength, applyTo)
         end, function ()
             applyTo.Size = Goal
         end)
+
     end
 
 end
