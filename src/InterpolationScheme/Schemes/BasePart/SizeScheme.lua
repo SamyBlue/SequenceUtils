@@ -14,6 +14,13 @@ SizeScheme._LoopCondition = function (instance)
     return IsSequenceNotConstant(instance:GetAttribute("SizeSequence"))
 end
 
+SizeScheme.Setup = function (instance)
+    --Setup Attributes
+    for attribute, value in ipairs(SizeScheme.Attributes) do
+        instance:SetAttribute(attribute, value)
+    end
+end
+
 SizeScheme.Play = function (instance, timeLength, applyTo)
     
     if not SizeScheme._LoopCondition(instance) then
