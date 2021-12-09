@@ -1,6 +1,8 @@
 local SchemesFolder = script.Parent.Schemes
 local Schemes = {}  --TODO: Turn into a module script "package" and just require in future
 
+local DEFAULT_TIME_LENGTH = 1
+
 for _, ClassFolder in ipairs(SchemesFolder:GetChildren()) do
     local contains = {}
 
@@ -12,7 +14,7 @@ for _, ClassFolder in ipairs(SchemesFolder:GetChildren()) do
 end
 
 local function SetupSchemesOnInstance(instance)
-    local TimeLength = instance:GetAttribute("TimeLength")
+    local TimeLength = instance:SetAttribute("TimeLength", DEFAULT_TIME_LENGTH)
 
     if instance:IsA('BasePart') then
         for _, Scheme in ipairs(Schemes.BasePart) do
