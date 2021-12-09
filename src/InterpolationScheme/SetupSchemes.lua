@@ -6,7 +6,7 @@ local DEFAULT_TIME_LENGTH = 1
 for _, ClassFolder in ipairs(SchemesFolder:GetChildren()) do
     local contains = {}
 
-    for _, Scheme in ipairs(ClassFolder) do
+    for _, Scheme in ipairs(ClassFolder:GetChildren()) do
         contains[Scheme.Name] = require(Scheme)
     end
 

@@ -4,7 +4,7 @@ local Schemes = {}  --TODO: Turn into a module script "package" and just require
 for _, ClassFolder in ipairs(SchemesFolder:GetChildren()) do
     local contains = {}
 
-    for _, Scheme in ipairs(ClassFolder) do
+    for _, Scheme in ipairs(ClassFolder:GetChildren()) do
         contains[Scheme.Name] = require(Scheme)
     end
 
