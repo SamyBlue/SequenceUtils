@@ -26,7 +26,7 @@ local function PlaySchemes(instanceOrArray)
         PlaySchemesOnInstance(instanceOrArray)
     elseif typeof(instanceOrArray) == "table" then
         for _, instance in ipairs(instanceOrArray) do
-            if instance:GetAttribute("TimeLength") ~= nil then -- Find instances that were setup correctly
+            if instance:GetAttribute("TimeLength") ~= nil then -- Find instances that were setup with an interpolation scheme
                 PlaySchemesOnInstance(instance)
             end
         end
