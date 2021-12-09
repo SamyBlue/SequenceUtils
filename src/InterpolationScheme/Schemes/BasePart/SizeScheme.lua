@@ -50,13 +50,13 @@ SizeScheme.Play = function (instance, timeLength, applyTo)
             local scale = Start + Diff * SeqMap:GetValue(interp)
             scaleQuotient = scale / scaleQuotient
             applyTo.Position = applyTo.CFrame:PointToWorldSpace(SizeFrom - SizeFrom * scaleQuotient)
-            applyTo.Size = scale
+            applyTo.Size = scale --? applyTo.Size * scaleQuotient if maybe want adaptive resizing in future
             SizeFrom = SizeFrom * scaleQuotient
         end, function ()
             local scale = Goal
             scaleQuotient = scale / scaleQuotient
             applyTo.Position = applyTo.CFrame:PointToWorldSpace(SizeFrom - SizeFrom * scaleQuotient)
-            applyTo.Size = scale
+            applyTo.Size = scale --? applyTo.Size * scaleQuotient if maybe want adaptive resizing in future
         end)
 
     end
