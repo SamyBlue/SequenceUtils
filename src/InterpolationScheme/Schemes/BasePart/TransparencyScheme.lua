@@ -14,7 +14,7 @@ end
 
 TransparencyScheme.Setup = function (instance)
     --Setup Attributes
-    for attribute, value in ipairs(TransparencyScheme.Attributes) do
+    for attribute, value in pairs(TransparencyScheme.Attributes) do
         instance:SetAttribute(attribute, value)
     end
 end

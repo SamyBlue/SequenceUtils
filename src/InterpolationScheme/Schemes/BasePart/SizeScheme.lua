@@ -15,7 +15,7 @@ end
 
 SizeScheme.Setup = function (instance)
     --Setup Attributes
-    for attribute, value in ipairs(SizeScheme.Attributes) do
+    for attribute, value in pairs(SizeScheme.Attributes) do
         instance:SetAttribute(attribute, value)
     end
 end

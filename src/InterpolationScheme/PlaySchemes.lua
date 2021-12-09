@@ -15,7 +15,7 @@ local function PlaySchemesOnInstance(instance)
     local TimeLength = instance:GetAttribute("TimeLength")
 
     if instance:IsA('BasePart') then
-        for _, Scheme in ipairs(Schemes.BasePart) do
+        for _, Scheme in pairs(Schemes.BasePart) do
             Scheme.Play(instance, TimeLength)
         end
     end --TODO: Add cases for particle emitters + other classes

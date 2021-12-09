@@ -21,7 +21,7 @@ local function SetupSchemesOnInstance(instance)
     instance:SetAttribute("TimeLength", DEFAULT_TIME_LENGTH)
 
     if instance:IsA('BasePart') then
-        for _, Scheme in ipairs(Schemes.BasePart) do
+        for _, Scheme in pairs(Schemes.BasePart) do
             Scheme.Setup(instance)
         end
     else -- No valid class found
