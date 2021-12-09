@@ -1,3 +1,9 @@
 roblox.toml
 selene.toml
 .vscode
+
+# Roblox Studio files
+/*.rbxlx.lock
+/*.rbxl.lock
+/*.rbxlx
+/*.rbxl
