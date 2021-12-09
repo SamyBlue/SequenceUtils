@@ -14,7 +14,7 @@ SizeScheme._LoopCondition = function (instance)
     return IsSequenceNotConstant(instance:GetAttribute("SizeSequence"))
 end
 
-SizeScheme.Constructor = function (instance, timeLength, applyTo)
+SizeScheme.Play = function (instance, timeLength, applyTo)
     
     if not SizeScheme._LoopCondition(instance) then
         return
