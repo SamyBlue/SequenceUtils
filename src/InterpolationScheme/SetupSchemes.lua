@@ -14,12 +14,14 @@ for _, ClassFolder in ipairs(SchemesFolder:GetChildren()) do
 end
 
 local function SetupSchemesOnInstance(instance)
-    local TimeLength = instance:SetAttribute("TimeLength", DEFAULT_TIME_LENGTH)
+    instance:SetAttribute("TimeLength", DEFAULT_TIME_LENGTH)
 
     if instance:IsA('BasePart') then
         for _, Scheme in ipairs(Schemes.BasePart) do
             Scheme.Setup(instance)
         end
+    else -- No valid class found
+        instance:SetAttribute("TimeLength", nil)
     end --TODO: Add cases for particle emitters + other classes
 end
 
