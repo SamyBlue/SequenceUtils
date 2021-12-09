@@ -1,5 +1,5 @@
 local RunService = game:GetService("RunService")
-local clock = time
+local clock = RunService:IsRunning() and time or os.clock
 
 local AwaitHeartbeatLoopFor = function (timeLength, inputFunction, callback) --yields current thread until completion
 	local connection

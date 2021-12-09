@@ -1,5 +1,5 @@
 local RunService = game:GetService("RunService")
-local clock = time
+local clock = RunService:IsRunning() and time or os.clock
 
 local HeartbeatLoopFor = function (timeLength, inputFunction, callback)
 	local connection
