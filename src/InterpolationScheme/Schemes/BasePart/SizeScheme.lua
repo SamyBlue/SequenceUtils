@@ -1,6 +1,6 @@
-local HeartbeatLoopFor = require(script.Parent.Parent.Parent.Loops.HeartbeatLoopFor)
-local IsSequenceNotConstant = require(script.Parent.Parent.IsSequenceNotConstant)
-local NumSeqMap = require(script.Parent.Parent.Parent.SequenceMaps.NumSeqMap)
+local HeartbeatLoopFor = require(script.Parent.Parent.Parent.Parent.Loops.HeartbeatLoopFor)
+local IsSequenceNotConstant = require(script.Parent.Parent.Parent.SchemesUtil.IsSequenceNotConstant)
+local NumSeqMap = require(script.Parent.Parent.Parent.Parent.SequenceMaps.NumSeqMap)
 local SizeScheme = {}
 
 SizeScheme.Attributes = {
