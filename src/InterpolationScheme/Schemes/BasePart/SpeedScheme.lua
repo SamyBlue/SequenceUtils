@@ -28,7 +28,7 @@ SpeedScheme.Play = function (instance, timeLength, applyTo)
 
     applyTo = applyTo or instance -- (Optional) Specify an alternative instance to apply scheme to
     
-    local Initial, Goal = applyTo:GetAttribute("SpeedInitial"), instance:GetAttribute("SpeedGoal")
+    local Initial, Goal = instance:GetAttribute("SpeedInitial"), instance:GetAttribute("SpeedGoal")
     local Diff = Goal - Initial
     local SeqMap = NumSeqMap.new(instance:GetAttribute("SpeedSequence"), instance:GetAttribute("Keypoints"))
 
