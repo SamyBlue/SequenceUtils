@@ -8,7 +8,13 @@ local SelectedInstances = SelectionService:Get()
 game.Selection:Set({})
 
 local function PlaySchemesAndResetAfter(instance)
-    local timeLength = instance:GetAttribute("TimeLength")
+    local TimeLength = instance:GetAttribute("TimeLength")
+    local IsPlaying = instance:GetAttribute("IsPlaying")
+
+    if IsPlaying == true then
+        return
+    end
+    
     local initialState = {}
 
     -- Gather initial states before playing any schemes
@@ -23,7 +29,7 @@ local function PlaySchemesAndResetAfter(instance)
     for _ = 1, NUM_DEMOS do
         PlaySchemes(instance)
         
-        task.wait(timeLength + DELAY_BETWEEN_DEMOS)
+        task.wait(TimeLength + DELAY_BETWEEN_DEMOS)
 
         -- Reset back to initial state before schemes were played
         for property, value in pairs(initialState) do
