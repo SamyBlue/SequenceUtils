@@ -28,11 +28,11 @@ SpinSpeedScheme.Play = function (instance, timeLength, applyTo)
 
     applyTo = applyTo or instance -- (Optional) Specify an alternative instance to apply scheme to
     
-    local Initial, Goal = applyTo.SpinSpeed, instance:GetAttribute("SpinSpeedGoal")
+    local Initial, Goal = applyTo:GetAttribute("SpinSpeedInitial"), instance:GetAttribute("SpinSpeedGoal")
     local Diff = Goal - Initial
     local SeqMap = NumSeqMap.new(instance:GetAttribute("SpinSpeedSequence"), instance:GetAttribute("Keypoints"))
 
-    local SpinAxis = instance:GetAttribute("SpinAxis")
+    local SpinAxis = instance:GetAttribute("SpinAxis").Unit
 
     HeartbeatLoopFor(timeLength, function (_, dt, interp)
         applyTo.CFrame = applyTo.CFrame * CFrame.fromAxisAngle(SpinAxis, dt * (Initial + Diff * SeqMap:GetValue(interp)))
