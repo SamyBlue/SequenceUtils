@@ -31,7 +31,11 @@ local function PlaySchemesAndResetAfter(instance)
 
 end
 
-for _, obj in ipairs(game:GetService("Selection"):Get()) do
+local SelectionService = game:GetService("Selection")
+local SelectedInstances = SelectionService:Get()
+game.Selection:Set({})
+
+for _, obj in ipairs(SelectedInstances) do
     if obj:GetAttribute("TimeLength") then
         task.spawn(PlaySchemesAndResetAfter, obj)
     end
