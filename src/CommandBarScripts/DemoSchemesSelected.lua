@@ -1,5 +1,8 @@
 local PlaySchemes = require(game:GetService("ReplicatedStorage"):FindFirstChild("InterpolationScheme", true).PlaySchemes)
 
+local DELAY_BETWEEN_DEMOS = 0.4
+local NUM_DEMOS = 3
+
 local function PlaySchemesAndResetAfter(instance)
     local timeLength = instance:GetAttribute("TimeLength")
     local initialState = {}
@@ -13,16 +16,18 @@ local function PlaySchemesAndResetAfter(instance)
     end
 
     -- Play a demo of all relevant schemes
-    PlaySchemes(instance)
+    for _ = 1, NUM_DEMOS do
+        PlaySchemes(instance)
+        
+        task.wait(timeLength + DELAY_BETWEEN_DEMOS)
 
-    task.wait(timeLength + 0.1)
+        -- Reset back to initial state before schemes were played
+        for property, value in pairs(initialState) do
+            instance[property] = value
+        end
+    end
 
     instance:SetAttribute("IsPlaying", false)
-
-    -- Reset back to initial state before schemes were played
-    for property, value in pairs(initialState) do
-        instance[property] = value
-    end
 
 end
 
