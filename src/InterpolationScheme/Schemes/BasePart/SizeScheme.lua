@@ -44,17 +44,18 @@ SizeScheme.Play = function (instance, timeLength, applyTo)
 
     else        
 
-        local scaleQuotient = Start
+        local prevScale = Start
 
         HeartbeatLoopFor(timeLength, function (_, _, interp)
             local scale = Start + Diff * SeqMap:GetValue(interp)
-            scaleQuotient = scale / scaleQuotient
+            local scaleQuotient = scale / prevScale
             applyTo.Position = applyTo.CFrame:PointToWorldSpace(SizeFrom - SizeFrom * scaleQuotient)
             applyTo.Size = scale --? applyTo.Size * scaleQuotient if maybe want adaptive resizing in future
             SizeFrom = SizeFrom * scaleQuotient
+            prevScale = scale
         end, function ()
             local scale = Start + Diff * SeqMap:GetValue(1)
-            scaleQuotient = scale / scaleQuotient
+            local scaleQuotient = scale / prevScale
             applyTo.Position = applyTo.CFrame:PointToWorldSpace(SizeFrom - SizeFrom * scaleQuotient)
             applyTo.Size = scale --? applyTo.Size * scaleQuotient if maybe want adaptive resizing in future
         end)
