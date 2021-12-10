@@ -5,7 +5,7 @@ ColorSeqMap.__index = ColorSeqMap
 -- Gamma is used to change the color space used for interpolation where higher gamma better preserves perceived brightness. See: https://www.youtube.com/watch?v=LKnqECcg6Gw
 function ColorSeqMap.new(colorSeq, mapSize, gamma)
 	local self = setmetatable({}, ColorSeqMap)
-	self._mapSize = mapSize or 20 -- must be an integer
+	self._mapSize = mapSize or 10 -- must be an integer
     self._gamma = gamma or 2
     self._gammaDiv = 1 / self._gamma
 	self._map = {}
@@ -16,8 +16,10 @@ function ColorSeqMap.new(colorSeq, mapSize, gamma)
 		self._mapSize = 1
 	end
 
-	self._map[0] = keypoints[1].Value
-	self._map[self._mapSize] = keypoints[#keypoints].Value
+	gamma = self._gamma
+
+	self._map[0] = Color3.new(keypoints[1].Value.R ^ gamma, keypoints[1].Value.G ^ gamma, keypoints[1].Value.B ^ gamma)
+	self._map[self._mapSize] = Color3.new(keypoints[#keypoints].Value.R ^ gamma, keypoints[#keypoints].Value.G ^ gamma, keypoints[#keypoints].Value.B ^ gamma)
 
 	self._samplingInterval = 1 / self._mapSize
 	local kpointIndex = 2

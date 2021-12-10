@@ -26,7 +26,7 @@ ColorScheme.Play = function (instance, timeLength, applyTo)
 
     applyTo = applyTo or instance -- (Optional) Specify an alternative instance to apply scheme to
     
-    local SeqMap = ColorSeqMap.new(instance:GetAttribute("ColorSequence"), 10) --instance:GetAttribute("Keypoints"))
+    local SeqMap = ColorSeqMap.new(instance:GetAttribute("ColorSequence"))
 
     HeartbeatLoopFor(timeLength, function (_, _, interp)
         applyTo.Color = SeqMap:GetValue(interp)
