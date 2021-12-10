@@ -3,6 +3,10 @@ local PlaySchemes = require(game:GetService("ReplicatedStorage"):FindFirstChild(
 local DELAY_BETWEEN_DEMOS = 0.4
 local NUM_DEMOS = 3
 
+local SelectionService = game:GetService("Selection")
+local SelectedInstances = SelectionService:Get()
+game.Selection:Set({})
+
 local function PlaySchemesAndResetAfter(instance)
     local timeLength = instance:GetAttribute("TimeLength")
     local initialState = {}
@@ -25,15 +29,12 @@ local function PlaySchemesAndResetAfter(instance)
         for property, value in pairs(initialState) do
             instance[property] = value
         end
+
+        instance:SetAttribute("IsPlaying", false)
     end
 
-    instance:SetAttribute("IsPlaying", false)
-
+    game.Selection:Set(SelectedInstances)
 end
-
-local SelectionService = game:GetService("Selection")
-local SelectedInstances = SelectionService:Get()
-game.Selection:Set({})
 
 for _, obj in ipairs(SelectedInstances) do
     if obj:GetAttribute("TimeLength") then
