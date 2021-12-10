@@ -29,7 +29,7 @@ TransparencyScheme.Play = function (instance, timeLength, applyTo)
     
     local Start, Goal = applyTo.Transparency, instance:GetAttribute("TransparencyGoal")
     local Diff = Goal - Start
-    local SeqMap = NumSeqMap.new(instance:GetAttribute("TransparencySequence"))
+    local SeqMap = NumSeqMap.new(instance:GetAttribute("TransparencySequence"), instance:GetAttribute("Keypoints"))
 
     HeartbeatLoopFor(timeLength, function (_, _, interp)
         applyTo.Transparency = Start + Diff * SeqMap:GetValue(interp)

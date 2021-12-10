@@ -32,7 +32,7 @@ SizeScheme.Play = function (instance, timeLength, applyTo)
     
     local Start, Goal = applyTo.Size, instance:GetAttribute("SizeGoal")
     local Diff = Goal - Start
-    local SeqMap = NumSeqMap.new(instance:GetAttribute("SizeSequence"))
+    local SeqMap = NumSeqMap.new(instance:GetAttribute("SizeSequence"), instance:GetAttribute("Keypoints"))
 
     if SizeFrom == Vector3.new(0, 0, 0) then
 
