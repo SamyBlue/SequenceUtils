@@ -19,6 +19,7 @@ local function SetupSchemesOnInstance(instance)
     end
 
     instance:SetAttribute("TimeLength", DEFAULT_TIME_LENGTH)
+    instance:SetAttribute("IsPlaying", false)
 
     if instance:IsA('BasePart') then
         for _, Scheme in pairs(Schemes.BasePart) do
@@ -26,6 +27,7 @@ local function SetupSchemesOnInstance(instance)
         end
     else -- No valid class found
         instance:SetAttribute("TimeLength", nil)
+        instance:SetAttribute("IsPlaying", nil)
     end --TODO: Add cases for particle emitters + other classes
 end
 

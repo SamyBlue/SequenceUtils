@@ -13,6 +13,13 @@ end
 
 local function PlaySchemesOnInstance(instance)
     local TimeLength = instance:GetAttribute("TimeLength")
+    local IsPlaying = instance:GetAttribute("IsPlaying")
+
+    if IsPlaying == true then
+        return
+    end
+
+    instance:SetAttribute("IsPlaying", true)
 
     if instance:IsA('BasePart') then
         for _, Scheme in pairs(Schemes.BasePart) do

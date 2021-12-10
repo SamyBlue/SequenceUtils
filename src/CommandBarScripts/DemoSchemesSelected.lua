@@ -17,6 +17,8 @@ local function PlaySchemesAndResetAfter(instance)
 
     task.wait(timeLength + 0.1)
 
+    instance:SetAttribute("IsPlaying", false)
+
     -- Reset back to initial state before schemes were played
     for property, value in pairs(initialState) do
         instance[property] = value
