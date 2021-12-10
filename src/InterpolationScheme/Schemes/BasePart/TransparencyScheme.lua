@@ -27,14 +27,14 @@ TransparencyScheme.Play = function (instance, timeLength, applyTo)
 
     applyTo = applyTo or instance -- (Optional) Specify an alternative instance to apply scheme to
     
-    local Start, Goal = applyTo.Transparency, instance:GetAttribute("TransparencyGoal")
-    local Diff = Goal - Start
+    local Initial, Goal = applyTo.Transparency, instance:GetAttribute("TransparencyGoal")
+    local Diff = Goal - Initial
     local SeqMap = NumSeqMap.new(instance:GetAttribute("TransparencySequence"), instance:GetAttribute("Keypoints"))
 
     HeartbeatLoopFor(timeLength, function (_, _, interp)
-        applyTo.Transparency = Start + Diff * SeqMap:GetValue(interp)
+        applyTo.Transparency = Initial + Diff * SeqMap:GetValue(interp)
     end, function ()
-        applyTo.Transparency = Start + Diff * SeqMap:GetValue(1)
+        applyTo.Transparency = Initial + Diff * SeqMap:GetValue(1)
     end)
 
 end

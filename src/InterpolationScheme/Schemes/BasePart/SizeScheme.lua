@@ -30,31 +30,31 @@ SizeScheme.Play = function (instance, timeLength, applyTo)
 
     local SizeFrom = instance:GetAttribute("SizeFrom")
     
-    local Start, Goal = applyTo.Size, instance:GetAttribute("SizeGoal")
-    local Diff = Goal - Start
+    local Initial, Goal = applyTo.Size, instance:GetAttribute("SizeGoal")
+    local Diff = Goal - Initial
     local SeqMap = NumSeqMap.new(instance:GetAttribute("SizeSequence"), instance:GetAttribute("Keypoints"))
 
     if SizeFrom == Vector3.new(0, 0, 0) then
 
         HeartbeatLoopFor(timeLength, function (_, _, interp)
-            applyTo.Size = Start + Diff * SeqMap:GetValue(interp)
+            applyTo.Size = Initial + Diff * SeqMap:GetValue(interp)
         end, function ()
-            applyTo.Size = Start + Diff * SeqMap:GetValue(1)
+            applyTo.Size = Initial + Diff * SeqMap:GetValue(1)
         end)
 
     else        
 
-        local prevScale = Start
+        local prevScale = Initial
 
         HeartbeatLoopFor(timeLength, function (_, _, interp)
-            local scale = Start + Diff * SeqMap:GetValue(interp)
+            local scale = Initial + Diff * SeqMap:GetValue(interp)
             local scaleQuotient = scale / prevScale
             applyTo.Position = applyTo.CFrame:PointToWorldSpace(SizeFrom - SizeFrom * scaleQuotient)
             applyTo.Size = scale --? applyTo.Size * scaleQuotient if maybe want adaptive resizing in future
             SizeFrom = SizeFrom * scaleQuotient
             prevScale = scale
         end, function ()
-            local scale = Start + Diff * SeqMap:GetValue(1)
+            local scale = Initial + Diff * SeqMap:GetValue(1)
             local scaleQuotient = scale / prevScale
             applyTo.Position = applyTo.CFrame:PointToWorldSpace(SizeFrom - SizeFrom * scaleQuotient)
             applyTo.Size = scale --? applyTo.Size * scaleQuotient if maybe want adaptive resizing in future
