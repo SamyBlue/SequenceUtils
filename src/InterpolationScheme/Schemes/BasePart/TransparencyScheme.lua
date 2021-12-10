@@ -34,7 +34,7 @@ TransparencyScheme.Play = function (instance, timeLength, applyTo)
     HeartbeatLoopFor(timeLength, function (_, _, interp)
         applyTo.Transparency = Start + Diff * SeqMap:GetValue(interp)
     end, function ()
-        applyTo.Transparency = Goal
+        applyTo.Transparency = Start + Diff * SeqMap:GetValue(1)
     end)
 
 end
