@@ -6,8 +6,29 @@ local SizeScheme = {}
 SizeScheme.Attributes = {
     ["SizeFrom"] = Vector3.new(0, 0, 0), --* Coordinates must be specified in initial object space of relevant instance
     ["SizeGoal"] = Vector3.new(1, 1, 1), --! All x, y, z Vector3 components assumed non-zero
-    ["SizeSequence"] = NumberSequence.new(0)
+    ["SizeSequence"] = NumberSequence.new(0),
+    ["SizeChangesEmitters"] = false --* If want to scale all child attachment positions and any descendant particle emitters proportionally
 }
+
+--TODO: When SizeChangesEmitters is true, scale descendant beams proportionally too by changing CurveSize0, CurveSize1, Width0, Width1
+SizeScheme._InsertResetState = function (resetStateTable, instance)
+    local applyTo = instance:IsA('BasePart') and instance or instance:FindFirstAncestorWhichIsA('BasePart')
+
+    if not resetStateTable[applyTo] then
+        resetStateTable[applyTo] = {}
+    end
+
+    local storedState = resetStateTable[applyTo]
+    storedState.CFrame = applyTo.CFrame
+    storedState.Size = applyTo.Size
+
+    local attachments
+    local emitters
+
+    if instance:GetAttribute("SizeChangesEmitters") == true then
+        --TODO: Add reset logic for attachments and emitters
+    end
+end
 
 SizeScheme._LoopCondition = function (instance)
     return IsSequenceNotConstant(instance:GetAttribute("SizeSequence"))
