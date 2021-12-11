@@ -16,7 +16,7 @@ local function PlaySchemesOnInstance(instance)
     local IsPlaying = instance:GetAttribute("IsPlaying")
 
     if IsPlaying == true then
-        warn("Cannot play Schemes on the currently playing instance : " ..instance:GetFullName())
+        warn("Cannot play Schemes on a currently playing instance : " ..instance:GetFullName())
         return
     end
 
