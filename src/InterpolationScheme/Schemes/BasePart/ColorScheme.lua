@@ -7,7 +7,7 @@ ColorScheme.Attributes = {
     ["ColorSequence"] = ColorSequence.new(Color3.new())
 }
 
-ColorScheme._InsertResetState = function (initialState, instance, applyTo)
+ColorScheme._InsertResetState = function (initialState, _, applyTo)
     initialState.Color = applyTo.Color
 end
 
