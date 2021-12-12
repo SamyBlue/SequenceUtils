@@ -1,17 +1,5 @@
-local SchemesFolder = script.Parent.Schemes
-local Schemes = {}  --TODO: Turn into a module script "package" and just require in future
-
+local GetSchemeClass = require(script.Parent.GetSchemeClass)
 local DEFAULT_TIME_LENGTH = 1
-
-for _, ClassFolder in ipairs(SchemesFolder:GetChildren()) do
-    local contains = {}
-
-    for _, Scheme in ipairs(ClassFolder:GetChildren()) do
-        contains[Scheme.Name] = require(Scheme)
-    end
-
-    Schemes[ClassFolder.Name] = contains
-end
 
 local function SetupSchemesOnInstance(instance)
     if instance:GetAttribute("TimeLength") then
@@ -22,15 +10,18 @@ local function SetupSchemesOnInstance(instance)
     instance:SetAttribute("IsPlaying", false)
     instance:SetAttribute("Keypoints", 20)
 
-    if instance:IsA('BasePart') then
-        for _, Scheme in pairs(Schemes.BasePart) do
+
+    local Schemes = GetSchemeClass(instance)
+
+    if Schemes then
+        for _, Scheme in pairs(Schemes) do
             Scheme.Setup(instance)
         end
     else -- No valid class found
         instance:SetAttribute("TimeLength", nil)
         instance:SetAttribute("IsPlaying", nil)
         instance:SetAttribute("Keypoints", nil)
-    end --TODO: Add cases for particle emitters + other classes
+    end
 end
 
 local function SetupSchemes(instanceOrArray)

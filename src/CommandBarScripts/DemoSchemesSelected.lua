@@ -7,6 +7,14 @@ local SelectionService = game:GetService("Selection")
 local SelectedInstances = SelectionService:Get()
 game.Selection:Set({})
 
+local function GetInitialState()
+
+end
+
+local function ResetToInitialState()
+
+end
+
 local function PlaySchemesAndResetAfter(instance)
     local TimeLength = instance:GetAttribute("TimeLength")
     local IsPlaying = instance:GetAttribute("IsPlaying")
