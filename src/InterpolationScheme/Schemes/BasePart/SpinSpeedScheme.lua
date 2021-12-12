@@ -10,7 +10,11 @@ SpinSpeedScheme.Attributes = {
 }
 
 SpinSpeedScheme._InsertResetState = function (initialState, _, applyTo)
-    initialState.CFrame = applyTo.CFrame
+    if not initialState[applyTo] then
+        initialState[applyTo] = {}
+    end
+    local applyToState = initialState[applyTo]
+    applyToState.CFrame = applyTo.CFrame
 end
 
 SpinSpeedScheme._LoopCondition = function (instance)

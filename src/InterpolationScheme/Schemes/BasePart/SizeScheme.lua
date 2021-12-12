@@ -12,14 +12,40 @@ SizeScheme.Attributes = {
 } --TODO: SizeScalesBeams
 
 SizeScheme._InsertResetState = function (initialState, instance, applyTo)
-    initialState.CFrame = applyTo.CFrame
-    initialState.Size = applyTo.Size
+    if not initialState[applyTo] then
+        initialState[applyTo] = {}
+    end
+    local applyToState = initialState[applyTo]
 
-    local attachments
-    local emitters
+    applyToState.CFrame = applyTo.CFrame
+    applyToState.Size = applyTo.Size
 
-    if instance:GetAttribute("SizeChangesEmitters") == true then
-        --TODO: Add reset logic for attachments and emitters
+    local SizeScalesAttachments = instance:GetAttribute("SizeScalesAttachments")
+    local SizeScalesEmitters = instance:GetAttribute("SizeScalesEmitters")
+
+    if SizeScalesAttachments or SizeScalesEmitters then
+        for _, obj in ipairs(applyTo:GetDescendants()) do
+            if obj.ClassName == "Attachment" and SizeScalesAttachments then
+                
+                if not initialState[obj] then
+                    initialState[obj] = {}
+                end
+                local objState = initialState[obj]
+
+                objState.CFrame = obj.CFrame
+
+            elseif obj.ClassName == "ParticleEmitter" and SizeScalesEmitters then
+                
+                if not initialState[obj] then
+                    initialState[obj] = {}
+                end
+                local objState = initialState[obj]
+
+                objState.Size = obj.Size
+                objState.Speed = obj.Speed
+
+            end
+        end
     end
 end
 

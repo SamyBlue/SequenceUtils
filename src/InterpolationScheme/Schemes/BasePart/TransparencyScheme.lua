@@ -9,7 +9,11 @@ TransparencyScheme.Attributes = {
 }
 
 TransparencyScheme._InsertResetState = function (initialState, _, applyTo)
-    initialState.Transparency = applyTo.Transparency
+    if not initialState[applyTo] then
+        initialState[applyTo] = {}
+    end
+    local applyToState = initialState[applyTo]
+    applyToState.Transparency = applyTo.Transparency
 end
 
 TransparencyScheme._LoopCondition = function (instance)

@@ -18,12 +18,14 @@ local function GetInitialState(instance)
         Scheme._InsertResetState(initialState, instance, applyTo)
     end
 
-    return initialState, applyTo
+    return initialState
 end
 
-local function ResetToInitialState(applyTo, initialState)
-    for property, value in pairs(initialState) do
-        applyTo[property] = value
+local function ResetToInitialState(initialState)
+    for objectToReset, initialObjectState in pairs(initialState) do
+        for property, value in pairs(initialObjectState) do
+            objectToReset[property] = value
+        end
     end
 end
 
@@ -36,7 +38,7 @@ local function PlaySchemesAndResetAfter(instance)
     end
 
     -- Gather initial states before playing any schemes
-    local initialState, applyTo = GetInitialState(instance)
+    local initialState = GetInitialState(instance)
 
     -- Play a demo of all relevant schemes
     for _ = 1, NUM_DEMOS do
@@ -45,7 +47,7 @@ local function PlaySchemesAndResetAfter(instance)
         task.wait(TimeLength + DELAY_BETWEEN_DEMOS)
 
         -- Reset back to initial state before schemes were played
-        ResetToInitialState(applyTo, initialState)
+        ResetToInitialState(initialState)
 
         instance:SetAttribute("IsPlaying", false)
     end

@@ -8,7 +8,11 @@ ColorScheme.Attributes = {
 }
 
 ColorScheme._InsertResetState = function (initialState, _, applyTo)
-    initialState.Color = applyTo.Color
+    if not initialState[applyTo] then
+        initialState[applyTo] = {}
+    end
+    local applyToState = initialState[applyTo]
+    applyToState.Color = applyTo.Color
 end
 
 ColorScheme._LoopCondition = function (instance)
