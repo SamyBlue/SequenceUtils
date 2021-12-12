@@ -9,6 +9,10 @@ SpeedScheme.Attributes = {
     ["SpeedSequence"] = NumberSequence.new(0)
 }
 
+SpeedScheme._InsertResetState = function (initialState, _, applyTo)
+    initialState.CFrame = applyTo.CFrame
+end
+
 SpeedScheme._LoopCondition = function (instance)
     return instance:GetAttribute("SpeedInitial") ~= 0 or instance:GetAttribute("SpeedGoal") ~= 0
 end
