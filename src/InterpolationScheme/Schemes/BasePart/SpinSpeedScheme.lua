@@ -9,6 +9,10 @@ SpinSpeedScheme.Attributes = {
     ["SpinSpeedSequence"] = NumberSequence.new(0)
 }
 
+SpinSpeedScheme._InsertResetState = function (initialState, _, applyTo)
+    initialState.CFrame = applyTo.CFrame
+end
+
 SpinSpeedScheme._LoopCondition = function (instance)
     return instance:GetAttribute("SpinSpeedInitial") ~= 0 or instance:GetAttribute("SpinSpeedGoal") ~= 0
 end
