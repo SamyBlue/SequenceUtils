@@ -7,6 +7,10 @@ ColorScheme.Attributes = {
     ["ColorSequence"] = ColorSequence.new(Color3.new())
 }
 
+ColorScheme._InsertResetState = function (initialState, instance, applyTo)
+    initialState.Color = applyTo.Color
+end
+
 ColorScheme._LoopCondition = function (instance)
     return IsSequenceNotConstant(instance:GetAttribute("ColorSequence"))
 end
