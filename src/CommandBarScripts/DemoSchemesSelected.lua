@@ -1,5 +1,6 @@
-local PlaySchemes = require(game:GetService("ReplicatedStorage"):FindFirstChild("InterpolationScheme", true).PlaySchemes)
-local GetSchemesFor = require(script.Parent.GetSchemesFor)
+local InterpolationScheme = game:GetService("ReplicatedStorage"):FindFirstChild("InterpolationScheme", true)
+local PlaySchemes = require(InterpolationScheme.PlaySchemes)
+local GetSchemesFor = require(InterpolationScheme.GetSchemesFor)
 
 local DELAY_BETWEEN_DEMOS = 0.4
 local NUM_DEMOS = 3
