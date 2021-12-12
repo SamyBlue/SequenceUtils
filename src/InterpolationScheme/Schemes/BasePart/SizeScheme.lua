@@ -84,8 +84,8 @@ SizeScheme.Play = function (instance, timeLength, applyTo)
     local SizeScalesAttachments = instance:GetAttribute("SizeScalesAttachments")
     local SizeScalesEmitters = instance:GetAttribute("SizeScalesEmitters")
 
-    local attachments
-    local emitters
+    local attachments = {}
+    local emitters = {}
     if SizeScalesAttachments or SizeScalesEmitters then
         for _, obj in ipairs(applyTo:GetDescendants()) do
             if obj.ClassName == "Attachment" and SizeScalesAttachments then
