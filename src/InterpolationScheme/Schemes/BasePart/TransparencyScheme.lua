@@ -8,6 +8,10 @@ TransparencyScheme.Attributes = {
     ["TransparencySequence"] = NumberSequence.new(0)
 }
 
+TransparencyScheme._InsertResetState = function (initialState, _, applyTo)
+    initialState.Transparency = applyTo.Transparency
+end
+
 TransparencyScheme._LoopCondition = function (instance)
     return IsSequenceNotConstant(instance:GetAttribute("TransparencySequence"))
 end
