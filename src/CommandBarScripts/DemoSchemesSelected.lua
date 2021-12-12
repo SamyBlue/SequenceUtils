@@ -1,4 +1,5 @@
 local PlaySchemes = require(game:GetService("ReplicatedStorage"):FindFirstChild("InterpolationScheme", true).PlaySchemes)
+local GetSchemesFor = require(script.Parent.GetSchemesFor)
 
 local DELAY_BETWEEN_DEMOS = 0.4
 local NUM_DEMOS = 3
@@ -7,12 +8,22 @@ local SelectionService = game:GetService("Selection")
 local SelectedInstances = SelectionService:Get()
 game.Selection:Set({})
 
-local function GetInitialState()
+local function GetInitialState(instance)
+    local initialState = {}
 
+    local Schemes, applyTo = GetSchemesFor(instance)
+
+    for _, Scheme in pairs(Schemes) do
+        Scheme._InsertResetState(initialState, instance, applyTo)
+    end
+
+    return initialState, applyTo
 end
 
-local function ResetToInitialState()
-
+local function ResetToInitialState(applyTo, initialState)
+    for property, value in pairs(initialState) do
+        applyTo[property] = value
+    end
 end
 
 local function PlaySchemesAndResetAfter(instance)
@@ -22,16 +33,9 @@ local function PlaySchemesAndResetAfter(instance)
     if IsPlaying == true then
         return
     end
-    
-    local initialState = {}
 
     -- Gather initial states before playing any schemes
-    if instance:IsA('BasePart') then
-        initialState.Size = instance.Size
-        initialState.CFrame = instance.CFrame
-        initialState.Transparency = instance.Transparency
-        initialState.Color = instance.Color
-    end
+    local initialState, applyTo = GetInitialState(instance)
 
     -- Play a demo of all relevant schemes
     for _ = 1, NUM_DEMOS do
@@ -40,9 +44,7 @@ local function PlaySchemesAndResetAfter(instance)
         task.wait(TimeLength + DELAY_BETWEEN_DEMOS)
 
         -- Reset back to initial state before schemes were played
-        for property, value in pairs(initialState) do
-            instance[property] = value
-        end
+        ResetToInitialState(applyTo, initialState)
 
         instance:SetAttribute("IsPlaying", false)
     end
@@ -61,5 +63,3 @@ for _, obj in ipairs(SelectedInstances) do
         end
     end
 end
-
---TODO: Reset state after scheme played 

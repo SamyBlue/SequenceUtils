@@ -1,4 +1,4 @@
-local GetSchemeClass = require(script.Parent.GetSchemeClass)
+local GetSchemesFor = require(script.Parent.GetSchemesFor)
 local DEFAULT_TIME_LENGTH = 1
 
 local function SetupSchemesOnInstance(instance)
@@ -11,7 +11,7 @@ local function SetupSchemesOnInstance(instance)
     instance:SetAttribute("Keypoints", 20)
 
 
-    local Schemes = GetSchemeClass(instance)
+    local Schemes = GetSchemesFor(instance)
 
     if Schemes then
         for _, Scheme in pairs(Schemes) do

@@ -11,16 +11,9 @@ SizeScheme.Attributes = {
 }
 
 --TODO: When SizeChangesEmitters is true, scale descendant beams proportionally too by changing CurveSize0, CurveSize1, Width0, Width1
-SizeScheme._InsertResetState = function (resetStateTable, instance)
-    local applyTo = instance:IsA('BasePart') and instance or instance:FindFirstAncestorWhichIsA('BasePart')
-
-    if not resetStateTable[applyTo] then
-        resetStateTable[applyTo] = {}
-    end
-
-    local storedState = resetStateTable[applyTo]
-    storedState.CFrame = applyTo.CFrame
-    storedState.Size = applyTo.Size
+SizeScheme._InsertResetState = function (initialState, instance, applyTo)
+    initialState.CFrame = applyTo.CFrame
+    initialState.Size = applyTo.Size
 
     local attachments
     local emitters

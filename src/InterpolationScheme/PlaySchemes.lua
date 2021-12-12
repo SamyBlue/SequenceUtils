@@ -1,4 +1,4 @@
-local GetSchemeClass = require(script.Parent.GetSchemeClass)
+local GetSchemesFor = require(script.Parent.GetSchemesFor)
 
 local function PlaySchemesOnInstance(instance)
     local TimeLength = instance:GetAttribute("TimeLength")
@@ -11,7 +11,7 @@ local function PlaySchemesOnInstance(instance)
 
     instance:SetAttribute("IsPlaying", true)
 
-    local Schemes, applyTo = GetSchemeClass(instance)
+    local Schemes, applyTo = GetSchemesFor(instance)
 
     if Schemes then
         for _, Scheme in pairs(Schemes) do

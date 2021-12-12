@@ -12,7 +12,7 @@ for _, ClassFolder in ipairs(SchemesFolder:GetChildren()) do
 end
 
 --Returns an array of all interpolation scheme modules that can interact with a given instance
-local function GetSchemeClass(instance)
+local function GetSchemesFor(instance)
     local applyTo
 
     if instance:IsA('BasePart') then
@@ -27,4 +27,4 @@ local function GetSchemeClass(instance)
     end
 end
 
-return GetSchemeClass
+return GetSchemesFor
