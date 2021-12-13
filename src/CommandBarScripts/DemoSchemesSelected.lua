@@ -3,7 +3,17 @@ local PlaySchemes = require(InterpolationScheme.PlaySchemes)
 local GetSchemesFor = require(InterpolationScheme.GetSchemesFor)
 
 local DELAY_BETWEEN_DEMOS = 0.4
-local NUM_DEMOS = 3
+local NUM_DEMOS = 2
+local START_INVISIBLE = true
+local INVISIBLE_DELAY = 0.4
+
+local function HasProperty(object, prop)
+    local success, val = pcall(function()
+        return object[prop]
+    end)
+    
+    return success and val ~= object:FindFirstChild(prop)
+end
 
 local function GetInitialState(instance)
     local initialState = {}
@@ -25,6 +35,34 @@ local function ResetToInitialState(initialState)
     end
 end
 
+local function MakeInstancesInvisible(instances, transparencyStates)
+    for _, instance in ipairs(instances) do
+        if transparencyStates[instance] then
+            continue -- prevents overwriting transparency state
+        end
+        local transparencyState = {}
+
+        if HasProperty(instance, "Transparency") and typeof(instance.Transparency) == "number" and instance.Transparency ~= 1 then
+            transparencyState.Transparency = instance.Transparency
+            instance.Transparency = 1
+        end
+
+        if HasProperty(instance, "Enabled") and typeof(instance.Enabled) == "boolean" and instance.Enabled ~= false then
+            transparencyState.Enabled = instance.Enabled
+            instance.Enabled = false
+        end
+
+        if instance.ClassName == "ParticleEmitter" then
+            instance:Clear()
+        end
+
+        transparencyStates[instance] = transparencyState
+        MakeInstancesInvisible(instance:GetChildren(), transparencyStates) -- make descendants invisible too
+    end
+
+    return transparencyStates
+end
+
 local function PlaySchemesAndResetAfter(instances)
     -- Gather initial states before playing any schemes
     local allInitialStates = {}
@@ -34,6 +72,13 @@ local function PlaySchemesAndResetAfter(instances)
 
     -- Play a demo of all relevant schemes
     for _ = 1, NUM_DEMOS do
+        if START_INVISIBLE then
+            local transparencyStates = {}
+            MakeInstancesInvisible(instances, transparencyStates)
+            task.wait(INVISIBLE_DELAY)
+            ResetToInitialState(transparencyStates)
+        end
+
         local PlayLength = PlaySchemes(instances)
         
         task.wait(PlayLength + DELAY_BETWEEN_DEMOS)
