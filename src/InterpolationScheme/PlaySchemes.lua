@@ -20,15 +20,27 @@ local function PlaySchemesOnInstance(instance)
     end
 end
 
+-- Plays schemes for a supplied instance or array of instances and returns the max. amount of time taken for all instances to finish playing
 local function PlaySchemes(instanceOrArray)
     if typeof(instanceOrArray) == "Instance" then
         PlaySchemesOnInstance(instanceOrArray)
+
+        return instanceOrArray:GetAttribute("TimeLength")
     elseif typeof(instanceOrArray) == "table" then
+        local MaxTimeLength = 0
+
         for _, instance in ipairs(instanceOrArray) do
-            if instance:GetAttribute("TimeLength") ~= nil then -- Find instances that were setup with an interpolation scheme
+            local timeLength = instance:GetAttribute("TimeLength")
+            if timeLength ~= nil then -- Find instances that were setup with an interpolation scheme
                 PlaySchemesOnInstance(instance)
+
+                if timeLength > MaxTimeLength then
+                    MaxTimeLength = timeLength
+                end
             end
         end
+
+        return MaxTimeLength
     end
 end
 
