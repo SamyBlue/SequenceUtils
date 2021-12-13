@@ -5,7 +5,7 @@ local SizeScheme = {}
 
 SizeScheme.Attributes = {
     ["SizeFrom"] = Vector3.new(0, 0, 0), --* Coordinates must be specified in initial object space of relevant instance
-    ["SizeGoal"] = Vector3.new(1, 1, 1), --! All x, y, z Vector3 components assumed non-zero
+    ["SizeMultiplierGoal"] = Vector3.new(1, 1, 1), --! All x, y, z Vector3 components assumed non-zero
     ["SizeSequence"] = NumberSequence.new(0),
     ["SizeScalesAttachments"] = false, --* If want to scale all descendant attachment positions proportionally
     ["SizeScalesEmitters"] = false --* If want to scale all descendant particle emitters proportionally
@@ -44,7 +44,7 @@ SizeScheme._InsertResetState = function (initialState, instance, applyTo)
                 objState.Size = obj.Size
                 objState.Speed = obj.Speed
                 objState.Acceleration = obj.Acceleration
-                
+
             end
         end
     end
@@ -110,7 +110,7 @@ SizeScheme.Play = function (instance, timeLength, applyTo)
         end
     end
 
-    local Initial, Goal = applyTo.Size, instance:GetAttribute("SizeGoal")
+    local Initial, Goal = applyTo.Size, applyTo.Size * instance:GetAttribute("SizeMultiplierGoal")
     local Diff = Goal - Initial
     local SeqMap = NumSeqMap.new(instance:GetAttribute("SizeSequence"), instance:GetAttribute("Keypoints"))
 
