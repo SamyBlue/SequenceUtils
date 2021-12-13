@@ -5,10 +5,6 @@ local GetSchemesFor = require(InterpolationScheme.GetSchemesFor)
 local DELAY_BETWEEN_DEMOS = 0.4
 local NUM_DEMOS = 3
 
-local SelectionService = game:GetService("Selection")
-local SelectedInstances = SelectionService:Get()
-game.Selection:Set({})
-
 local function GetInitialState(instance)
     local initialState = {}
 
@@ -29,40 +25,51 @@ local function ResetToInitialState(initialState)
     end
 end
 
-local function PlaySchemesAndResetAfter(instance)
-    local TimeLength = instance:GetAttribute("TimeLength")
-    local IsPlaying = instance:GetAttribute("IsPlaying")
-
-    if IsPlaying == true then
-        return
-    end
-
+local function PlaySchemesAndResetAfter(instances)
     -- Gather initial states before playing any schemes
-    local initialState = GetInitialState(instance)
+    local allInitialStates = {}
+    for _, instance in ipairs(instances) do
+        table.insert(allInitialStates, GetInitialState(instance))
+    end
 
     -- Play a demo of all relevant schemes
     for _ = 1, NUM_DEMOS do
-        PlaySchemes(instance)
+        local PlayLength = PlaySchemes(instances)
         
-        task.wait(TimeLength + DELAY_BETWEEN_DEMOS)
+        task.wait(PlayLength + DELAY_BETWEEN_DEMOS)
 
         -- Reset back to initial state before schemes were played
-        ResetToInitialState(initialState)
+        for _, initialState in ipairs(allInitialStates) do
+            ResetToInitialState(initialState)
+        end
+    end
 
+    -- Set all instances as no longer playing so that they can be played again later
+    for _, instance in ipairs(instances) do
         instance:SetAttribute("IsPlaying", false)
     end
-
-    game.Selection:Set(SelectedInstances)
 end
 
-for _, obj in ipairs(SelectedInstances) do
-    if obj:GetAttribute("TimeLength") then
-        task.spawn(PlaySchemesAndResetAfter, obj)
-    end
+local SelectionService = game:GetService("Selection")
+local SelectedInstances = SelectionService:Get()
 
-    for _, descendant in ipairs(obj:GetDescendants()) do
-        if descendant:GetAttribute("TimeLength") then
-            task.spawn(PlaySchemesAndResetAfter, descendant)
+-- Unselect everything
+SelectionService:Set({})
+
+-- Get all selected instances and their descendants that have schemes setup
+local PlayFor = {}
+for _, instance in ipairs(SelectedInstances) do
+    if instance:GetAttribute("TimeLength") ~= nil then
+        table.insert(PlayFor, instance)
+    end
+    for _, descendant in ipairs(instance:GetDescendants()) do
+        if descendant:GetAttribute("TimeLength") ~= nil then
+            table.insert(PlayFor, descendant)
         end
     end
 end
+
+-- Play all relevant schemes and re-select instances afterwards
+PlaySchemesAndResetAfter(PlayFor)
+
+SelectionService:Set(SelectedInstances)
