@@ -42,11 +42,11 @@ local function PlaySchemesAndResetAfter(instances)
         for _, initialState in ipairs(allInitialStates) do
             ResetToInitialState(initialState)
         end
-    end
 
-    -- Set all instances as no longer playing so that they can be played again later
-    for _, instance in ipairs(instances) do
-        instance:SetAttribute("IsPlaying", false)
+        -- Set all instances as no longer playing so that they can be played again
+        for _, instance in ipairs(instances) do
+            instance:SetAttribute("IsPlaying", false)
+        end
     end
 end
 
