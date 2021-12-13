@@ -43,7 +43,8 @@ SizeScheme._InsertResetState = function (initialState, instance, applyTo)
 
                 objState.Size = obj.Size
                 objState.Speed = obj.Speed
-
+                objState.Acceleration = obj.Acceleration
+                
             end
         end
     end
@@ -62,7 +63,7 @@ local function ScaleParticle(particle, scale)
 
 	particle.Size = NumberSequence.new(newKeypoints)
 	particle.Speed = NumberRange.new(particle.Speed.Min * scale, particle.Speed.Max * scale)
-    --TODO: Scale Acceleration and Drag
+    particle.Acceleration = particle.Acceleration * scale
 end
 
 SizeScheme.Setup = function (instance)
