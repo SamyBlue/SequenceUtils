@@ -40,7 +40,7 @@ EmitScheme.Play = function (instance, timeLength, applyTo)
         Interval:TimeUpdate(interp)
 
         if Interval:PrevTimeUpdateChangedInterval() then
-            applyTo:Emit(Interval.lowerKeypoint.Value * EmitMax)
+            applyTo:Emit(math.floor(0.5 + Interval.lowerKeypoint.Value * EmitMax))
         end
     end)
 
