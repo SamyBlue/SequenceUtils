@@ -6,6 +6,7 @@ local DELAY_BETWEEN_DEMOS = 0.4
 local NUM_DEMOS = 2
 local START_INVISIBLE = true
 local INVISIBLE_DELAY = 0.4
+local CLEAR_PARTICLES_AFTER = false
 
 local function HasProperty(object, prop)
     local success, val = pcall(function()
@@ -52,7 +53,7 @@ local function MakeInstancesInvisible(instances, transparencyStates)
             instance.Enabled = false
         end
 
-        if instance.ClassName == "ParticleEmitter" then
+        if instance.ClassName == "ParticleEmitter" and CLEAR_PARTICLES_AFTER then
             instance:Clear()
         end
 
