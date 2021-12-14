@@ -33,7 +33,7 @@ EmitScheme.Play = function (instance, timeLength, applyTo)
 
     applyTo = applyTo or instance -- (Optional) Specify an alternative instance to apply scheme to
     
-    local EmitMax = instance:GetAttribute("EmitMaxAmoujnt")
+    local EmitMax = instance:GetAttribute("EmitMaxAmount")
     local Interval = IntervalChangeDetector.new(instance:GetAttribute("EmitSequence"))
 
     HeartbeatLoopFor(timeLength, function (_, _, interp)
