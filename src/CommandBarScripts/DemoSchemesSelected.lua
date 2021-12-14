@@ -105,11 +105,11 @@ SelectionService:Set({})
 -- Get all selected instances and their descendants that have schemes setup
 local PlayFor = {}
 for _, instance in ipairs(SelectedInstances) do
-    if instance:GetAttribute("TimeLength") ~= nil then
+    if instance:GetAttribute("TimeLength") ~= nil and instance:GetAttribute("IsPlaying") == false then
         table.insert(PlayFor, instance)
     end
     for _, descendant in ipairs(instance:GetDescendants()) do
-        if descendant:GetAttribute("TimeLength") ~= nil then
+        if descendant:GetAttribute("TimeLength") ~= nil and descendant:GetAttribute("IsPlaying") == false then
             table.insert(PlayFor, descendant)
         end
     end
