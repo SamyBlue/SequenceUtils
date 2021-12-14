@@ -19,6 +19,7 @@ end
 
 --* Assumes: Each UpdateTime(timeInput) uses a timeInput value that is greater than (or equal to) the most previously used timeInput value for this function prior
 --* i.e. consecutive calls of UpdateTime must have ascending timeInputs
+--* timeInput must be a value between 0 and 1 exclusive
 function IntervalChangeDetector:TimeUpdate(timeInput) --TODO: Add warning if timeInput given is less than previous timeInput
 	self._lastLowerKeypointIndex = self.lowerKeypointIndex
 
