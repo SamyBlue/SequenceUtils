@@ -9,7 +9,7 @@ local function SetupSchemesOnInstance(instance)
     instance:SetAttribute("TimeLength", DEFAULT_TIME_LENGTH)
     instance:SetAttribute("IsPlaying", false)
     instance:SetAttribute("Keypoints", 20)
-
+    instance:SetAttribute("DelayBeforePlay", 0)
 
     local Schemes = GetSchemesFor(instance)
 
@@ -21,6 +21,7 @@ local function SetupSchemesOnInstance(instance)
         instance:SetAttribute("TimeLength", nil)
         instance:SetAttribute("IsPlaying", nil)
         instance:SetAttribute("Keypoints", nil)
+        instance:SetAttribute("DelayBeforePlay", nil)
     end
 end
 

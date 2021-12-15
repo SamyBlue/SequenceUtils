@@ -14,8 +14,18 @@ local function PlaySchemesOnInstance(instance)
     local Schemes, applyTo = GetSchemesFor(instance)
 
     if Schemes then
-        for _, Scheme in pairs(Schemes) do
-            Scheme.Play(instance, TimeLength, applyTo)
+        local delayBeforePlay = instance:GetAttribute("DelayBeforePlay")
+        if delayBeforePlay == 0 then
+            for _, Scheme in pairs(Schemes) do
+                Scheme.Play(instance, TimeLength, applyTo)
+            end
+        else
+            task.spawn(function ()
+                task.wait(delayBeforePlay)
+                for _, Scheme in pairs(Schemes) do
+                    Scheme.Play(instance, TimeLength, applyTo)
+                end
+            end)
         end
     end
 end
@@ -25,7 +35,7 @@ local function PlaySchemes(instanceOrArray)
     if typeof(instanceOrArray) == "Instance" then
         PlaySchemesOnInstance(instanceOrArray)
 
-        return instanceOrArray:GetAttribute("TimeLength")
+        return instanceOrArray:GetAttribute("TimeLength") + instanceOrArray:GetAttribute("DelayBeforePlay")
     elseif typeof(instanceOrArray) == "table" then
         local MaxTimeLength = 0
 
@@ -34,8 +44,9 @@ local function PlaySchemes(instanceOrArray)
             if timeLength ~= nil then -- Find instances that were setup with an interpolation scheme
                 PlaySchemesOnInstance(instance)
 
-                if timeLength > MaxTimeLength then
-                    MaxTimeLength = timeLength
+                local delayBeforePlay = instance:GetAttribute("DelayBeforePlay")
+                if timeLength + delayBeforePlay > MaxTimeLength then
+                    MaxTimeLength = timeLength + delayBeforePlay
                 end
             end
         end
