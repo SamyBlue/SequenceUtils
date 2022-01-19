@@ -40,7 +40,7 @@ EmitSoundScheme.Play = function (instance, timeLength, applyTo)
         if Interval:PrevTimeUpdateChangedInterval() then
             local soundClone = applyTo:Clone()
             soundClone.PlayOnRemove = true
-            soundClone.Parent = applyTo
+            soundClone.Parent = applyTo.Parent
             soundClone:Destroy()
         end
     end)
